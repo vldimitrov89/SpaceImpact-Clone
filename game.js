@@ -90,6 +90,7 @@ space: shoot
 	function spawnTrash() {
 		const name = choose(objs.filter(n => n != "bossName"));
         
+        
 		add([
 			sprite(name),
 			pos(width(), rand(20, height() - 40)),
