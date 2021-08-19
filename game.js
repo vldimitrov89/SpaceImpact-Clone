@@ -5,7 +5,8 @@
 	+2. Need to implement and spawn more enemy types
 	3. Need to implement Bosses and boss health
 	4. Need to implement levels with different backgrounds and enemies/bosses
-	5. Need to implement score and Game Over screen
+	-5. Need to implement score and Game Over screen
+	6. Implement power-ups and different types of bullets
 
 */
 
@@ -49,6 +50,8 @@ scene("main", () => {
 	const BOSS_HEALTH = 1000;
 	const OBJ_HEALTH = 4;
 
+	let score = 0;
+
 	layers([
 		"game",
 		"ui",
@@ -67,6 +70,28 @@ right: shoot
 		pos(4, height() - 4),
 		layer("ui"),
 	]);
+
+	//add top UI
+	add([
+		text("Space Shooter", 6),
+		origin("topleft"),
+		pos(4, 5),
+		layer("ui"),
+	]);
+
+	
+	// display score
+	const scorePoints = add([
+		text(`Score: ${score}`, 6),
+		origin("topleft"),
+		pos(width() - 70, 5),
+		layer("ui"),
+	]);
+
+	function addScore() {
+		score++;
+		scorePoints.text = `Score: ${score}`;
+	}
 
     //add player
 	const player = add([
@@ -101,7 +126,7 @@ right: shoot
 	}
 
 	keyPress("right", () => {
-		spawnBullet(player.pos.sub(4, 0));
+		spawnBullet(player.pos);
 	});
 
 	// run this callback every frame for all objects with tag "bullet"
@@ -154,6 +179,7 @@ right: shoot
 	collides("bullet", "enemy", (b, e) => {
 		destroy(b);
 		destroy(e);
+		addScore();
 	});
 
 });
