@@ -1,3 +1,14 @@
+
+/*
+	TO DO:
+	+1. Need to implement bullets
+	+2. Need to implement and spawn more enemy types
+	3. Need to implement Bosses and boss health
+	4. Need to implement levels with different backgrounds and enemies/bosses
+	5. Need to implement score and Game Over screen
+
+*/
+
 //inititialize cnvas and kaboom
 kaboom({
 	global: true,
@@ -13,6 +24,8 @@ kaboom({
 //object with enemies
 const objs = [
 	"enemy_jellyfish_white",
+	"enemy_ship1_white",
+	"enemy_ship2_white"
 ];
 
 //load sprites
@@ -114,7 +127,7 @@ right: shoot
 				speed: rand(TRASH_SPEED * 0.5, TRASH_SPEED * 1.5),
 			},
 		]);
-		wait(0.3, spawnTrash);
+		wait(1, spawnTrash);
 	}
 
     //after spawning enemies will do this action (move)
@@ -125,7 +138,7 @@ right: shoot
 		}
 	});
 
-	//spawnTrash();
+	spawnTrash();
 
 	//player collision
 	player.collides("enemy", (e) => {
@@ -142,16 +155,6 @@ right: shoot
 		destroy(b);
 		destroy(e);
 	});
-
-    /*
-        TO DO:
-        +1. Need to implement bullets
-        2. Need to implement and spawn more enemy types
-        3. Need to implement Bosses and boss health
-        4. Need to implement levels with different backgrounds and enemies/bosses
-        5. Need to implement score and Game Over screen
-
-    */
 
 });
 
