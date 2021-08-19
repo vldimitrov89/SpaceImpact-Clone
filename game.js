@@ -1,4 +1,3 @@
-
 /*
 	TO DO:
 	+1. Need to implement bullets
@@ -26,7 +25,8 @@ kaboom({
 const objs = [
 	"enemy_jellyfish_white",
 	"enemy_ship1_white",
-	"enemy_ship2_white"
+	"enemy_ship2_white",
+	"enemy_ship3_white"
 ];
 
 //load sprites
@@ -51,7 +51,7 @@ scene("main", () => {
 	const OBJ_HEALTH = 4;
 
 	let score = 0;
-
+	
 	layers([
 		"game",
 		"ui",
@@ -140,7 +140,7 @@ right: shoot
 
     //function for spawning enemies
 	function spawnTrash() {
-		const name = choose(objs.filter(n => n != "bossName"));
+		const name = choose(objs);
         
 		add([
 			sprite(name),
@@ -171,7 +171,7 @@ right: shoot
 		destroy(player);
 		camShake(120);
 		wait(1, () => {
-			go("main");
+			go("game_over");
 		});
 	});
 
@@ -181,6 +181,41 @@ right: shoot
 		destroy(e);
 		addScore();
 	});
+
+});
+
+scene("game_over", () => {
+	add([
+		text("Game Over", 21),
+		origin("center"),
+		pos(width() / 2, height() / 2),
+	]);
+
+	const restartBtn = add([
+		pos(width() / 2, height() - 40),
+		rect(63, 20),
+		origin("center"),
+		color(1, 1, 1),
+	]);
+
+	add([
+		text("Restart", 8),
+		pos(width() / 2, height() - 40),
+		origin("center"),
+		color(0, 0, 0),
+	]);
+
+	restartBtn.action(() => {
+		if (restartBtn.isHovered()) {
+			restartBtn.color = rgb(0.8, 0.8, 0.8);
+			if (mouseIsClicked()) {
+				go("main");
+			}
+		} else {
+			restartBtn.color = rgb(1, 1, 1);
+		}
+	});
+
 
 });
 
