@@ -18,6 +18,7 @@ const objs = [
 //load sprites
 loadRoot("/sprites/");
 loadSprite("ship", "hero_white.png");
+loadSprite("bullet", "bullet.png");
 
 for (const obj of objs) {
 	loadSprite(obj, `${obj}.png`);
@@ -45,10 +46,9 @@ scene("main", () => {
     //add instructions
 	add([
 		text(`
-            up: insane mode
-left:  move left
-right: move right
-space: shoot
+up:  move up
+down: move down
+right: shoot
 		`.trim(), 4),
 		origin("botleft"),
 		pos(4, height() - 4),
@@ -65,7 +65,7 @@ space: shoot
 
     //player controls
 	keyDown("up", () => {
-        if((player.pos.y - 10) > 0) {
+        if((player.pos.y - 30) > 0) {
             player.move(0, -PLAYER_SPEED);
         }
 	});
@@ -76,14 +76,28 @@ space: shoot
         }
 	});
 
-    //player collision
-	player.collides("enemy", (e) => {
-		destroy(e);
-		destroy(player);
-		camShake(120);
-		wait(1, () => {
-			go("main");
-		});
+	//function to spawn bullet
+	function spawnBullet(p) {
+		add([
+			sprite("bullet"),
+			pos(p),
+			origin("right"),
+			color(1, 1, 1),
+			"bullet",
+		]);
+	}
+
+	keyPress("right", () => {
+		spawnBullet(player.pos.sub(4, 0));
+	});
+
+	// run this callback every frame for all objects with tag "bullet"
+	action("bullet", (b) => {
+		b.move(BULLET_SPEED, 0);
+		// remove the bullet if it's out of the scene for performance
+		if (b.pos.x > width()) {
+			destroy(b);
+		}
 	});
 
     //function for spawning enemies
@@ -92,7 +106,7 @@ space: shoot
         
 		add([
 			sprite(name),
-			pos(width(), rand(20, height() - 40)),
+			pos(width(), rand(30, height() - 40)),
 			origin("left"),
 			"trash",
 			"enemy",
@@ -113,9 +127,25 @@ space: shoot
 
 	//spawnTrash();
 
+	//player collision
+	player.collides("enemy", (e) => {
+		destroy(e);
+		destroy(player);
+		camShake(120);
+		wait(1, () => {
+			go("main");
+		});
+	});
+
+	//bullet collision
+	collides("bullet", "enemy", (b, e) => {
+		destroy(b);
+		destroy(e);
+	});
+
     /*
         TO DO:
-        1. Need to implement bullets
+        +1. Need to implement bullets
         2. Need to implement and spawn more enemy types
         3. Need to implement Bosses and boss health
         4. Need to implement levels with different backgrounds and enemies/bosses
