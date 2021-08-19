@@ -171,7 +171,7 @@ right: shoot
 		destroy(player);
 		camShake(120);
 		wait(1, () => {
-			go("game_over");
+			go("game_over", score);
 		});
 	});
 
@@ -184,15 +184,22 @@ right: shoot
 
 });
 
-scene("game_over", () => {
+scene("game_over", (score) => {
+
 	add([
 		text("Game Over", 21),
 		origin("center"),
 		pos(width() / 2, height() / 2),
 	]);
 
+	add([
+		text(`Your Score: ${score}`, 10),
+		origin("center"),
+		pos(width() / 2, height() - 50),
+	]);
+
 	const restartBtn = add([
-		pos(width() / 2, height() - 40),
+		pos(width() / 2, height() - 20),
 		rect(63, 20),
 		origin("center"),
 		color(1, 1, 1),
@@ -200,7 +207,7 @@ scene("game_over", () => {
 
 	add([
 		text("Restart", 8),
-		pos(width() / 2, height() - 40),
+		pos(width() / 2, height() - 20),
 		origin("center"),
 		color(0, 0, 0),
 	]);
