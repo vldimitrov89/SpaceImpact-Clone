@@ -1,14 +1,3 @@
-/*
-	TO DO:
-	+1. Need to implement bullets
-	+2. Need to implement and spawn more enemy types
-	3. Need to implement Bosses and boss health
-	4. Need to implement levels with different backgrounds and enemies/bosses
-	-5. Need to implement score and Game Over screen
-	6. Implement power-ups and different types of bullets
-
-*/
-
 //inititialize cnvas and kaboom
 kaboom({
 	global: true,
@@ -46,9 +35,8 @@ scene("main", () => {
 	const TRASH_SPEED = 48;
 	const BOSS_SPEED = 12;
 	const PLAYER_SPEED = 120;
-	const STAR_SPEED = 32;
 	const BOSS_HEALTH = 1000;
-	const OBJ_HEALTH = 4;
+	const OBJ_HEALTH = 3;
 
 	let score = 0;
 	
@@ -114,6 +102,25 @@ right: shoot
         }
 	});
 
+	// Health function
+	function health(hp) {
+		return {
+			hurt(n) {
+				hp -= (n === undefined ? 1 : n);
+				if (hp <= 0) {
+					this.trigger("death");
+				}
+			},
+			hp() {
+				return hp;
+			},
+		};
+	}
+	
+	on("death", "enemy", (e) => {
+		destroy(e);
+	});
+	
 	//function to spawn bullet
 	function spawnBullet(p) {
 		add([
@@ -145,6 +152,7 @@ right: shoot
 		add([
 			sprite(name),
 			pos(width(), rand(30, height() - 40)),
+			health(OBJ_HEALTH),
 			origin("left"),
 			"trash",
 			"enemy",
@@ -152,7 +160,14 @@ right: shoot
 				speed: rand(TRASH_SPEED * 0.5, TRASH_SPEED * 1.5),
 			},
 		]);
-		wait(1, spawnTrash);
+		
+		if(score <= 12) {
+			wait(rand(1.0, 2.0), spawnTrash);
+		} else {
+			destroyAll("trash");
+			//TO DO: spawn boss
+		}
+		
 	}
 
     //after spawning enemies will do this action (move)
@@ -178,7 +193,8 @@ right: shoot
 	//bullet collision
 	collides("bullet", "enemy", (b, e) => {
 		destroy(b);
-		destroy(e);
+		//trigger "hurt" and reduce health
+		e.hurt(1);
 		addScore();
 	});
 
