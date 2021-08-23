@@ -22,6 +22,7 @@ const objs = [
 loadRoot("/sprites/");
 loadSprite("ship", "hero_white.png");
 loadSprite("bullet", "bullet.png");
+loadSprite("boss1", "boss1_white.png");
 
 for (const obj of objs) {
 	loadSprite(obj, `${obj}.png`);
@@ -35,8 +36,8 @@ scene("main", () => {
 	const TRASH_SPEED = 48;
 	const BOSS_SPEED = 12;
 	const PLAYER_SPEED = 120;
-	const BOSS_HEALTH = 1000;
-	const OBJ_HEALTH = 3;
+	const BOSS_HEALTH = 100;
+	const TRASH_HEALTH = 3;
 
 	let score = 0;
 	
@@ -152,7 +153,7 @@ right: shoot
 		add([
 			sprite(name),
 			pos(width(), rand(30, height() - 40)),
-			health(OBJ_HEALTH),
+			health(TRASH_HEALTH),
 			origin("left"),
 			"trash",
 			"enemy",
@@ -165,10 +166,32 @@ right: shoot
 			wait(rand(1.0, 2.0), spawnTrash);
 		} else {
 			destroyAll("trash");
-			//TO DO: spawn boss
+			
+			add([
+				sprite("boss1"),
+				pos(width() - 60, height() / 2),
+				origin("left"),
+				scale(2),
+				health(BOSS_HEALTH),
+				"enemy",
+				"boss",
+				{
+					dir: -1,
+				}
+			]);
 		}
 		
 	}
+
+	action("boss", (b) => {
+		if(b.pos.y > height() - 54) {
+			b.dir = -1;
+		} else if(b.pos.y < 54) {
+			b.dir = 1;
+		}
+		b.move(0, BOSS_SPEED * b.dir);
+		
+	});
 
     //after spawning enemies will do this action (move)
 	action("trash", (t) => {
