@@ -14,8 +14,8 @@ I use live-server plugin for VS Code but you can use:<br>
 TO DO list:<br>
 	+1. Need to implement bullets<br>
 	+2. Need to implement and spawn more enemy types<br>
-	-3. Need to implement Bosses and boss health<br>
-	4. Need to implement levels with different backgrounds and enemies/bosses<br>
+	+3. Need to implement Bosses and boss health<br>
+	-4. Need to implement levels with different backgrounds and enemies/bosses<br>
 	+5. Need to implement score and Game Over screen<br>
 	6. Implement power-ups and different types of bullets<br>
 	7. Make enemies shoot back<br>
