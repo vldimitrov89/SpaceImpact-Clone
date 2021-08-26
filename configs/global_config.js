@@ -1,6 +1,5 @@
 
-//inititialize cnvas and kaboom
-kaboom({
+export const k = kaboom({
     global: true,
     //fullscreen: true,
     clearColor: [0, 0, 0, 1], // background color
@@ -10,3 +9,4 @@ kaboom({
     width: 250, // width of canvas
     height: 150, // height of canvas
 });
+

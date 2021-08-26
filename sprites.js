@@ -16,6 +16,6 @@ for (const obj of objs) {
 	loadSprite(obj, `${obj}.png`);
 }
 
-export default function() {
+export default function Sprites() {
     return objs;
 }

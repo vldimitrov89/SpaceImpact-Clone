@@ -1,23 +1,25 @@
+import { k } from '../configs/global_config.js';
+import LevelOne from './level_1.js';
+import sprites from '../sprites.js';
 
-
-export default function(score) {
-
-    scene("game_over", (score) => {
-
+export default function GameOver(score) {
+    
+    k.scene("game_over", () => {
+    
         add([
             text("Game Over", 21),
             origin("center"),
-            pos(width() / 2, height() / 2),
+            pos(width() / 2, height() / 3),
         ]);
 
         add([
             text(`Your Score: ${score}`, 10),
             origin("center"),
-            pos(width() / 2, height() - 50),
+            pos(width() / 2, height() - 70),
         ]);
 
         const restartBtn = add([
-            pos(width() / 2, height() - 20),
+            pos(width() / 2, height() - 35),
             rect(63, 20),
             origin("center"),
             color(1, 1, 1),
@@ -25,7 +27,7 @@ export default function(score) {
 
         add([
             text("Restart", 8),
-            pos(width() / 2, height() - 20),
+            pos(width() / 2, height() - 35),
             origin("center"),
             color(0, 0, 0),
         ]);
@@ -34,7 +36,7 @@ export default function(score) {
             if (restartBtn.isHovered()) {
                 restartBtn.color = rgb(0.8, 0.8, 0.8);
                 if (mouseIsClicked()) {
-                    go("main");
+                    LevelOne(sprites());
                 }
             } else {
                 restartBtn.color = rgb(1, 1, 1);
@@ -43,5 +45,6 @@ export default function(score) {
 
     });
 
-    go("game_over", score);
+    k.go("game_over");
+
 }
