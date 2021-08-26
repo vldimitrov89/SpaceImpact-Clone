@@ -9,4 +9,3 @@ export const k = kaboom({
     width: 250, // width of canvas
     height: 150, // height of canvas
 });
-

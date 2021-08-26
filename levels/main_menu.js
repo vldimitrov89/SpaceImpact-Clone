@@ -1,6 +1,5 @@
 import { k } from '../configs/global_config.js';
 import LevelOne from './level_1.js';
-import sprites from '../sprites.js';
 
 export default function MainMenu() {
     
@@ -30,7 +29,7 @@ export default function MainMenu() {
             if (playtBtn.isHovered()) {
                 playtBtn.color = rgb(0.8, 0.8, 0.8);
                 if (mouseIsClicked()) {
-                    LevelOne(sprites());
+                    LevelOne();
                 }
             } else {
                 playtBtn.color = rgb(1, 1, 1);

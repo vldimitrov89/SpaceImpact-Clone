@@ -1,24 +1,28 @@
 import { k } from '../configs/global_config.js';
-import uiConfig from '../configs/ui_config.js';
-import playerConfig from '../player.js';
+import InvertedUI from '../configs/ui_config.js';
+import Player from '../player.js';
 import GameOver from './game_over.js';
+import Sprites from '../sprites.js';
 import LevelTwo from '../levels/level_2.js';
 
 const BULLET_SPEED = 320;
 const TRASH_SPEED = 48;
 const BOSS_SPEED = 12;
 const PLAYER_SPEED = 120;
-const BOSS_HEALTH = 10;
+const BOSS_HEALTH = 5;
 const TRASH_HEALTH = 3;
+const SCORE_GOAL = 3;
 
 
+export default function LevelOne() {
 
-export default function LevelOne(objs) {
+    k.scene("level1", () => {
 
-    k.scene("level1", (objs) => {
+        const objs = Sprites();
+
         let score = 0;
-
-        uiConfig();
+        console.log(InvertedUI());
+        InvertedUI();
 
         // display score
         const scorePoints = add([
@@ -33,7 +37,7 @@ export default function LevelOne(objs) {
             scorePoints.text = `Score: ${score}`;
         }
 
-        const player = playerConfig();
+        const player = Player();
 
         //player controls
         keyDown("up", () => {
@@ -72,7 +76,7 @@ export default function LevelOne(objs) {
         });
 
         on("death", "boss", (b) => {
-            LevelTwo();
+            LevelTwo(score);
         });
         
         //function to spawn bullet
@@ -111,7 +115,7 @@ export default function LevelOne(objs) {
                 },
             ]);
             
-            if(score <= 12) {
+            if(score <= SCORE_GOAL) {
                 wait(rand(1.0, 2.0), spawnTrash);
             } else {
                 destroyAll("trash");
@@ -171,6 +175,6 @@ export default function LevelOne(objs) {
         });
     });
 
-    go("level1", objs);
+    go("level1");
 
 }
